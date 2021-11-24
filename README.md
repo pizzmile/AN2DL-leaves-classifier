@@ -3,6 +3,20 @@
 ## Usage
 To train and test the networks run "compiler.py"
 
+The repository does not contains any dataset or actual model: you need to move in your own files like follows.
+
+### Directories setup
+- Dataset
+  - data/MAIN_DATASET_DIR/train
+  - data/MAIN_DATASET_DIR/valid
+  - data/MAIN_DATASET_DIR/test
+
+- Models architectures
+  - models/MODEL_NAME/dataset.yaml
+  - models/MODEL_NAME/model.yaml
+
+NOTE: other empty directories will be filled automatically by the compiler.
+
 ### Set up the compiler
 To apply your custom settings to the directory tree updates the value for the keys in the *"config.yaml"* file.
 
