@@ -14,9 +14,20 @@ from .builders import build_generators, build_model
 from .callbacks import create_output_callbacks
 
 
+def get_exp_lr_scheduler():
+    def scheduler(epoch, lr):
+        if epoch < 10:
+            return lr
+        else:
+            return lr * tf.math.exp(-0.1)
+
+    return tf.keras.callbacks.LearningRateScheduler(scheduler)
+
+
 CALLBACKS_DICT = {
     'ReduceLROnPlateau': tf.keras.callbacks.ReduceLROnPlateau,
-    'EarlyStopping': tf.keras.callbacks.EarlyStopping
+    'EarlyStopping': tf.keras.callbacks.EarlyStopping,
+    'ExpScheduler': get_exp_lr_scheduler
 }
 
 
