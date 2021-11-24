@@ -1,0 +1,6 @@
+# Paths
+directories:
+  configs_dir: settings
+  data_dir: data
+  logs_dir: logs
+  models_dir: models

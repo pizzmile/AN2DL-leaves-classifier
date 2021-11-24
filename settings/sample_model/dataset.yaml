@@ -1,0 +1,76 @@
+# Directories
+# location of the data set
+root: &root data                                        # root directory for data
+dataset_dir: &dataset_dir !joinPath [*root, dataset811] # folder that contains the data set
+# Data
+# generic information about the images in the data set
+classes: &classes
+  - apple
+  - blueberry
+  - cherry
+  - corn
+  - grape
+  - orange
+  - peach
+  - pepper
+  - potato
+  - raspberry
+  - soybean
+  - squash
+  - strawberry
+  - tomato
+target_size: &target_size !tuple [256, 256]
+color_mode: &color_mode rgb
+class_mode: &class_mode categorical
+batch_size: &batch_size 32
+# Reproducibility
+seed: &seed 42
+# Generators
+# settings for the image data generators
+generators:
+  training:
+    data_gen:                                       # settings for ImageDataGenerator (data augmentation and preprocessing)
+      rotation_range: 10
+      height_shift_range: 50
+      width_shift_range: 50
+      zoom_range: 0.3
+      horizontal_flip: True
+      vertical_flip: True
+      fill_mode: reflect
+      preprocessing_function: VGG16                 # preprocessing for transfer learning with VGG16 (each supernet has its own preprocessing function)
+      # rescale: !divid [1, 255.]                     # uncomment when not using transfer learning
+    gen:                                            # standard setup for generator
+      directory: !joinPath [*dataset_dir, train]    # sub-directory for the train data set (inside main data set directory)
+      target_size: *target_size
+      classes: *classes
+      seed: *seed
+      color_mode: *color_mode
+      class_mode: *class_mode
+      batch_size: *batch_size
+      shuffle: True                                 # set to True to use random sample from data set
+  validation:                                       # standard setup for generator
+    data_gen:                                       # settings for ImageDataGenerator (data augmentation and preprocessing)
+      preprocessing_function: VGG16                 # preprocessing for transfer learning with VGG16 (each supernet has its own preprocessing function)
+      # rescale: !divid [1, 255.]                     # uncomment when not using transfer learning
+    gen:
+      directory: !joinPath [*dataset_dir, val]      # sub-directory for the validation data set (inside main data set directory)
+      target_size: *target_size
+      classes: *classes
+      seed: *seed
+      color_mode: *color_mode
+      class_mode: *class_mode
+      batch_size: *batch_size
+      shuffle: false                                # set to True to use random sample from data set
+  test:
+    data_gen:                                       # settings for ImageDataGenerator (data augmentation and preprocessing)
+      preprocessing_function: VGG16                 # preprocessing for transfer learning with VGG16 (each supernet has its own preprocessing function)
+      # rescale: !divid [1, 255.]                     # uncomment when not using transfer learning
+    gen:                                            # standard setup for generator
+      directory: !joinPath [*dataset_dir, test]     # sub-directory for the test data set (inside main data set directory)
+      target_size: *target_size
+      classes: *classes
+      seed: *seed
+      color_mode: *color_mode
+      class_mode: *class_mode
+      batch_size: *batch_size
+      shuffle: false                                # set to True to use random sample from data set
