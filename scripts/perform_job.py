@@ -31,10 +31,10 @@ def perform_job(model_name, directories, silent=True, tg_silent=True):
     # Setup model
     # -----------
     # Load model configuration
-    with open(f'{configs_dir}\{model_name}\dataset.yaml') as file:
+    with open(os.path.join(configs_dir, model_name, 'dataset.yaml')) as file:
         gen_config = yaml.load(file, Loader=yaml.FullLoader)
         file.close()
-    with open(f'{configs_dir}\{model_name}\model.yaml') as file:
+    with open(os.path.join(configs_dir, model_name, 'model.yaml')) as file:
         model_config = yaml.load(file, Loader=yaml.FullLoader)
         file.close()
     # Set random seed for reproducibility
@@ -54,12 +54,12 @@ def perform_job(model_name, directories, silent=True, tg_silent=True):
     model = build_model(model_config)
     # Get image
     image = visualkeras.layered_view(model, legend=True, spacing=20, scale_xy=5,
-                                     to_file=f"{configs_dir}/{model_name}/diagram.png")
+                                     to_file=os.path.join(configs_dir, model_name, 'diagram.png'))
     if not silent:
         model.summary()
         image.show()
     if not tg_silent:
-        with open(f"{configs_dir}/{model_name}/diagram.png", 'rb') as image_file:
+        with open(os.path.join(configs_dir, model_name, 'diagram.png'), 'rb') as image_file:
             telegram_send.send(images=[image_file], silent=True)
             image_file.close()
 
@@ -83,7 +83,7 @@ def perform_job(model_name, directories, silent=True, tg_silent=True):
     )
     # Save best epoch models
     now = datetime.datetime.now().strftime('%b%d_%H-%M-%S')
-    model.save(f'{models_dir}/{model_name}{now}')
+    model.save(os.path.join(models_dir, f'{model_name}{now}'))
 
     # Evaluate the model
     # ------------------
