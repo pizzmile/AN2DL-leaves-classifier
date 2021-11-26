@@ -12,8 +12,9 @@ LAYERS_DICT = {
     'Dense': tf.keras.layers.Dense,
     'Dropout': tf.keras.layers.Dropout,
     'VGG16': tf.keras.applications.vgg16.VGG16,
-    'Inception': tf.keras.applications.inception_v3.InceptionV3,
+    'InceptionV3': tf.keras.applications.InceptionV3,
     'ResNet50': tf.keras.applications.resnet50.ResNet50,
+    # 'BatchNormalization': tf.keras.layers.BathcNormalization
 }
 
 INITIALIZERS_DICT = {
@@ -25,7 +26,8 @@ LOSSES_DICT = {
 }
 
 OPTIMIZERS_DICT = {
-    'Adam': tf.keras.optimizers.Adam
+    'Adam': tf.keras.optimizers.Adam,
+    'SGD': tf.keras.optimizers.SGD
 }
 
 
@@ -68,9 +70,12 @@ def build_model(config):
         layer_params = parse_layer_params(layer['params'])
         l = build_layer(layer['type'], layer_params)
         if 'trainable_layers' in layer.keys():
-            for i, sub_layer in enumerate(l.layers):
-                sub_layer.trainable = True if i > layer['trainable_layers'] else False
-                # print(i, sub_layer.name, sub_layer.trainable)
+            if layer['trainable_layers'] is not None:
+                for i, sub_layer in enumerate(l.layers):
+                    sub_layer.trainable = True if i > layer['trainable_layers'] else False
+            else:
+                for sub_layer in l.layers:
+                    sub_layer.trainable = False
         x = l(x)
 
     layer_params = parse_layer_params(config['output_layer']['params'])

@@ -1,5 +1,6 @@
 import gc
 import pprint
+import traceback
 
 import yaml
 
@@ -46,5 +47,9 @@ if __name__ == '__main__':
         file.close()
     # Complete jobs
     for work in job_queue:
-        perform_job(work, directories, silent=False)
-        gc.collect()
+        try:
+            perform_job(work, directories, silent=False)
+            gc.collect()
+        except Exception as e:
+            pprint.pprint(f"[EXCEPTION] An exception occurred while training {work} -> SKIP")
+            traceback.print_exception(type(e), e, e.__traceback__)

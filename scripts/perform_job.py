@@ -8,15 +8,15 @@ import datetime
 import numpy as np
 import tensorflow as tf
 import visualkeras
-
+import math
 
 from .builders import build_generators, build_model
 from .callbacks import create_output_callbacks
 
 
-def get_exp_lr_scheduler():
+def get_exp_scheduler(tresh=10):
     def scheduler(epoch, lr):
-        if epoch < 10:
+        if epoch < tresh:
             return lr
         else:
             return lr * tf.math.exp(-0.1)
@@ -24,10 +24,19 @@ def get_exp_lr_scheduler():
     return tf.keras.callbacks.LearningRateScheduler(scheduler)
 
 
+def get_ste_scheduler(tresh=10, init_lr=1e-3, dec_val=0.1):
+    def scheduler(epoch):
+        print(tresh, init_lr, dec_val, epoch)
+        return init_lr * math.pow(dec_val, math.floor((1 + epoch) / tresh))
+
+    return tf.keras.callbacks.LearningRateScheduler(scheduler)
+
+
 CALLBACKS_DICT = {
     'ReduceLROnPlateau': tf.keras.callbacks.ReduceLROnPlateau,
     'EarlyStopping': tf.keras.callbacks.EarlyStopping,
-    'ExpScheduler': get_exp_lr_scheduler
+    'ExpScheduler': get_exp_scheduler,
+    'StepScheduler': get_ste_scheduler
 }
 
 
@@ -93,12 +102,11 @@ def perform_job(model_name, directories, silent=True, tg_silent=True):
         callbacks=callbacks,
     )
     # Save best epoch models
-    now = datetime.datetime.now().strftime('%b%d_%H-%M-%S')
-    model.save(os.path.join(models_dir, f'{model_name}{now}'))
+    now = datetime.datetime.now().strftime('%b%dT%H-%M-%S')
+    model.save(os.path.join(models_dir, f'{model_name}@{now}'))
 
     # Evaluate the model
     # ------------------
     evaluation = model.evaluate(test_gen, return_dict=True)
     if not silent:
         pprint.pprint(evaluation)
-

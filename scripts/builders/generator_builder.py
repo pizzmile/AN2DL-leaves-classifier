@@ -4,7 +4,7 @@ import tensorflow as tf
 
 PREPROCESSING_FUN_DICT = {
     'VGG16': tf.keras.applications.vgg16.preprocess_input,
-    'Inception': tf.keras.applications.inception_v3.preprocess_input,
+    'InceptionV3': tf.keras.applications.inception_v3.preprocess_input,
     'ResNet50': tf.keras.applications.resnet50.preprocess_input
 }
 
