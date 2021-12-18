@@ -138,4 +138,4 @@ models/*
 logs/*
 
 # Settings
-settings/*
+settings/sample_model
