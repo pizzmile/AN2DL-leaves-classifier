@@ -1,0 +1,7 @@
+dirs:
+  data: !mapToList
+    root: data
+  models: !mapToList
+    root: &modelsRoot models
+    settings: !joinPath [*modelsRoot, settings]
+    logs: !joinPath [*modelsRoot, logs]
