@@ -1,4 +1,9 @@
-# AN2DL-project
+# AN2DL - Project 1
+The objective of this project is to create an image classification network specifically for leaf images. The dataset used comprises labeled images of leaves, each identified by its species. A Convolutional Neural Network (CNN) serves as the backbone of our approach.
+
+As the project was set up as a competitive Kaggle challenge among POLIMI students, the final model has been excluded from the repository.
+
+Included in the repository is a framework designed to simplify deep learning workflows, offering automated training and testing for a queue of models.
 
 ## Usage
 To train and test the networks run "compiler.py"
