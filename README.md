@@ -4,6 +4,7 @@ The objective of this project is to create an image classification network speci
 As the project was set up as a competitive Kaggle challenge among POLIMI students, the final model has been excluded from the repository.
 
 Included in the repository is a framework designed to simplify deep learning workflows, offering automated training and testing for a queue of models.
+The DL framework includes also a telegram bot, to send live updates.
 
 ## Usage
 To train and test the networks run "compiler.py"
